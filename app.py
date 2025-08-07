@@ -51,7 +51,13 @@ def duplicate_slide(prs, source_slide):
 st.set_page_config(page_title="Generatore Etichette", layout="centered")
 st.title("Generatore Etichette")
 
-ppt_file = selected_template = st.selectbox("Scegli un template", template_names)
+search_term = st.text_input("🔍 Cerca un template", "")
+filtered_templates = [t for t in template_names if search_term.lower() in t.lower()]
+
+selected_template = st.selectbox("📂 Seleziona un template", filtered_templates)
+
+# Riferimento al file selezionato
+ppt_file = selected_template
 excel_file = st.file_uploader("Carica il file Excel (.xlsx o .xls)", type=["xlsx", "xls"])
 
 if ppt_file and excel_file:
