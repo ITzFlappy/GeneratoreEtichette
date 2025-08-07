@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 # Cartella dove metti i template .pptx
-TEMPLATE_DIR = Path("templates")
+TEMPLATE_DIR = Path("Templates")
 available_templates = {f.stem: f for f in TEMPLATE_DIR.glob("*.pptx")}
 template_names = list(available_templates.keys())
 # Evita errore su importlib.metadata.version
