@@ -43,17 +43,17 @@ def duplicate_slide(prs, source_slide):
             pass
     return new_slide
 
-st.set_page_config(page_title="Generatore Slide Bennet", layout="centered")
-st.title("📊 Generatore Slide Bennet")
+st.set_page_config(page_title="Generatore Etichette", layout="centered")
+st.title("Generatore Etichette")
 
-ppt_file = st.file_uploader("📥 Carica il template PowerPoint (.pptx)", type=["pptx"])
-excel_file = st.file_uploader("📊 Carica il file Excel (.xlsx o .xls)", type=["xlsx", "xls"])
+ppt_file = st.file_uploader("Carica il template PowerPoint (.pptx)", type=["pptx"])
+excel_file = st.file_uploader("Carica il file Excel (.xlsx o .xls)", type=["xlsx", "xls"])
 
 if ppt_file and excel_file:
     df = pd.read_excel(excel_file)
     st.success(f"{len(df)} righe caricate dal file Excel.")
 
-    if st.button("🚀 Genera PowerPoint"):
+    if st.button("Genera PowerPoint"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pptx") as tmp:
             tmp.write(ppt_file.read())
             template_path = tmp.name
@@ -78,7 +78,7 @@ if ppt_file and excel_file:
             final_ppt.save(result)
             result.seek(0)
             st.download_button(
-                "📥 Scarica PowerPoint Compilato",
+                "Scarica PowerPoint Compilato",
                 data=result,
                 file_name="output_bennet_finale.pptx",
                 mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
