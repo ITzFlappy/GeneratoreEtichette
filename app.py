@@ -7,7 +7,12 @@ from io import BytesIO
 import tempfile
 from copy import deepcopy
 import re
+from pathlib import Path
 
+# Cartella dove metti i template .pptx
+TEMPLATE_DIR = Path("templates")
+available_templates = {f.stem: f for f in TEMPLATE_DIR.glob("*.pptx")}
+template_names = list(available_templates.keys())
 # Evita errore su importlib.metadata.version
 importlib.metadata.version = lambda name: "1.48.0" if name == "streamlit" else importlib.metadata.version(name)
 
@@ -46,7 +51,7 @@ def duplicate_slide(prs, source_slide):
 st.set_page_config(page_title="Generatore Etichette", layout="centered")
 st.title("Generatore Etichette")
 
-ppt_file = st.file_uploader("Carica il template PowerPoint (.pptx)", type=["pptx"])
+ppt_file = selected_template = st.selectbox("Scegli un template", template_names)
 excel_file = st.file_uploader("Carica il file Excel (.xlsx o .xls)", type=["xlsx", "xls"])
 
 if ppt_file and excel_file:
@@ -54,11 +59,8 @@ if ppt_file and excel_file:
     st.success(f"{len(df)} righe caricate dal file Excel.")
 
     if st.button("Genera PowerPoint"):
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pptx") as tmp:
-            tmp.write(ppt_file.read())
-            template_path = tmp.name
-
-        template_ppt = Presentation(template_path)
+        selected_path = available_templates[selected_template]
+        template_ppt = Presentation(str(selected_path))
         template_slide = template_ppt.slides[0]
 
         final_ppt = Presentation()
